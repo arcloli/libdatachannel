@@ -105,6 +105,11 @@ struct RTC_CPP_EXPORT RtcpReportBlock {
 	void preparePacket(SSRC in_ssrc, unsigned int packetsLost, unsigned int totalPackets,
 	                   uint16_t highestSeqNo, uint16_t seqNoCycles, uint32_t jitter,
 	                   uint64_t lastSR_NTP, uint64_t lastSR_DELAY);
+	// Explicit received-packet statistics; legacy preparePacket signature is retained.
+	void prepareReceptionReport(SSRC ssrc, uint8_t fractionLost, int32_t cumulativeLost,
+	                            uint32_t extendedHighest, uint32_t jitter,
+	                            uint64_t lastSrNtp, uint32_t delaySinceSr);
+	[[nodiscard]] int32_t getPacketsLostCountSigned() const;
 	void setSSRC(SSRC in_ssrc);
 	void setPacketsLost(uint8_t fractionLost, unsigned int packetsLostCount);
 	void setSeqNo(uint16_t highestSeqNo, uint16_t seqNoCycles);

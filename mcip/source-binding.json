@@ -1,0 +1,14 @@
+{
+  "upstream_repository": "https://github.com/paullouisageneau/libdatachannel",
+  "upstream_tag": "v0.23.1",
+  "upstream_commit": "222529eb2c8ae44f96462504ae38023f62809cec",
+  "candidate": "mcip-rtcp-receiver-1",
+  "modified_library_sha256": {
+    "CMakeLists.txt": "7b3167b8a4cd9fc1b9c33aa8f1a22f16c8f9b8c9332a35ccf72778e3bb50fc70",
+    "include/rtc/rtcpreceivingsession.hpp": "8a3905e7511317f4e28c3201ac9ba6ff2e3006b81461aaa70e355eed8691e9bf",
+    "src/rtcpreceivingsession.cpp": "7f8b9b82da6f9caddf10aec18060f51c382e353c7b7be6262288e37d04aae7a2",
+    "include/rtc/rtp.hpp": "5f620e4904a8b649fb06f7ba7c4fab66d3b2e00f2e806b92174a0748fd80f776",
+    "src/rtp.cpp": "3e7f1ca2132723903d8298181aeb14960fc704752f654afe4057f816074822ef"
+  },
+  "deployed": false
+}

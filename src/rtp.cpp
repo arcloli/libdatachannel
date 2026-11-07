@@ -191,6 +191,19 @@ void RtcpReportBlock::preparePacket(SSRC in_ssrc, [[maybe_unused]] unsigned int 
 	// _delaySinceLastReport = lastSR_DELAY;
 }
 
+void RtcpReportBlock::prepareReceptionReport(SSRC ssrc, uint8_t fractionLost,
+                                               int32_t cumulativeLost, uint32_t highest,
+                                               uint32_t jitterValue, uint64_t lastSr,
+                                               uint32_t delay) {
+    preparePacket(ssrc, 0, 0, uint16_t(highest), uint16_t(highest >> 16), jitterValue, lastSr, delay);
+    const int32_t clamped = std::max<int32_t>(-8388608, std::min<int32_t>(8388607, cumulativeLost));
+    setPacketsLost(fractionLost, uint32_t(clamped));
+}
+int32_t RtcpReportBlock::getPacketsLostCountSigned() const {
+    const uint32_t value = getPacketsLostCount();
+    return value & 0x800000 ? int32_t(int64_t(value) - 0x1000000) : int32_t(value);
+}
+
 void RtcpReportBlock::setSSRC(SSRC in_ssrc) { _ssrc = htonl(in_ssrc); }
 
 void RtcpReportBlock::setPacketsLost(uint8_t fractionLost,
@@ -201,11 +214,11 @@ void RtcpReportBlock::setPacketsLost(uint8_t fractionLost,
 uint8_t RtcpReportBlock::getFractionLost() const {
 	// Fraction lost is expressed as 8-bit fixed point number
 	// In order to get actual lost percentage divide the result by 256
-	return _fractionLostAndPacketsLost & 0xFF;
+	return uint8_t(ntohl(_fractionLostAndPacketsLost) >> 24);
 }
 
 unsigned int RtcpReportBlock::getPacketsLostCount() const {
-	return ntohl(_fractionLostAndPacketsLost & 0xFFFFFF00);
+	return ntohl(_fractionLostAndPacketsLost) & 0xFFFFFF;
 }
 
 uint16_t RtcpReportBlock::seqNoCycles() const { return ntohs(_seqNoCycles); }
